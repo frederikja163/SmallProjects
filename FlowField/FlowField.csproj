@@ -11,7 +11,8 @@
 
     <ItemGroup>
       <EmbeddedResource Include="shader.frag" />
-      <EmbeddedResource Include="shader.vert" />
+        <EmbeddedResource Include="shader.vert" />
+        <EmbeddedResource Include="compute.shader" />
     </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
 {
-    public sealed class BufferObject<T> : IDisposable
+    public class BufferObject<T> : IDisposable
      where T : unmanaged
     {
         internal readonly uint Handle;
@@ -34,6 +34,22 @@ namespace Engine.Rendering
         public void Dispose()
         {
             GL.DeleteBuffer(Handle);
+        }
+    }
+
+    public class ShaderStorageBufferObject<T> : BufferObject<T>
+        where T : unmanaged
+    {
+        public ShaderStorageBufferObject(int bindingIndex, params T[] data) : base(data)
+        {
+            GL.BindBuffer(BufferTargetARB.ShaderStorageBuffer, Handle);
+            GL.BindBufferBase(BufferTargetARB.ShaderStorageBuffer, (uint)bindingIndex, Handle);
+            GL.BindBuffer(BufferTargetARB.ShaderStorageBuffer, 0);
+        }
+        
+        public ShaderStorageBufferObject(int bindingIndex, int size) : base(size)
+        {
+            
         }
     }
 }

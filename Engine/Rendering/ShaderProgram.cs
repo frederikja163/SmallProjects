@@ -47,6 +47,13 @@ namespace Engine.Rendering
         }
     }
 
+    public sealed class ComputeShader : ShaderStage
+    {
+        public ComputeShader(StreamReader stream) : base(ShaderType.ComputeShader, stream)
+        {
+        }
+    }
+
     public sealed class ShaderProgram : IDisposable
     {
         internal readonly uint Handle;
@@ -58,6 +65,13 @@ namespace Engine.Rendering
             using FragmentShader fragment = Assets.GetAsset<FragmentShader>(fragmentPath);
 
             return new ShaderProgram(vertex, fragment);
+        }
+
+        public static ShaderProgram CreateCompute(string computePath)
+        {
+            using ComputeShader compute = Assets.GetAsset<ComputeShader>(computePath);
+
+            return new ShaderProgram(compute);
         }
 
         public ShaderProgram(params ShaderStage[] shaderStage)

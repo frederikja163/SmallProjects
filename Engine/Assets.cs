@@ -17,6 +17,7 @@ namespace Engine
         {
             AddLoader<VertexShader>(stream => new VertexShader(stream));
             AddLoader<FragmentShader>(stream => new FragmentShader(stream));
+            AddLoader<ComputeShader>(stream => new ComputeShader(stream));
         }
 
         public static void AddAssembly(Assembly assembly)

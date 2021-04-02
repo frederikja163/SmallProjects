@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Engine;
@@ -15,8 +16,9 @@ namespace FlowFieldCPU
 {
     internal sealed class Program
     {
-        private const int ParticleCount = 100_000;
+        private const int ParticleCount = 10_000_0;
         
+        [StructLayout(LayoutKind.Sequential, Size = 16)]
         private struct Particle
         {
             public Vector2 Position;
@@ -41,13 +43,15 @@ namespace FlowFieldCPU
                     particles[i] = new Particle() {Position = position, Angle = angle};
                 }
                 ShaderProgram shader = ShaderProgram.CreateVertexFragment("shader.vert", "shader.frag");
+                ShaderProgram computeShader = ShaderProgram.CreateCompute("compute.shader");
 
-                BufferObject<Particle> vbo = new BufferObject<Particle>(particles);
+                BufferObject<Particle> vbo = new ShaderStorageBufferObject<Particle>(0, particles);
                 VertexArray vao = new VertexArray();
                 vao.AddVertexAttribute(vbo, shader.GetAttributeLocation("vPosition"), 2, VertexAttribType.Float);
                 GL.ClearColor(0.1f, 0.1f, 0.1f, 1);
                 
                 Stopwatch stopwatch = new Stopwatch();
+                int positionZLoc = computeShader.GetUniformLocation("uPositionZ");
                 float z = (float)random.NextDouble();
                 while (window.IsRunning)
                 {
@@ -56,37 +60,41 @@ namespace FlowFieldCPU
                     window.Title = $"Flow field [FPS: {dt}]";
                     stopwatch.Reset();
                     stopwatch.Start();
+                    
+                    computeShader.Bind();
+                    z += 0.001f;
+                    computeShader.SetUniform(positionZLoc, z);
+                    GL.DispatchCompute(ParticleCount / 1000, 1, 1);
+                    
                     GL.Clear(ClearBufferMask.ColorBufferBit);
 
-                    for (var i = 0; i < particles.Length; i++)
-                    {
-                        float angle = particles[i].Angle;
-                        Vector2 position = particles[i].Position;
-                        position += new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * 0.01f;
-
-                        if (position.X < -1)
-                            position.X = 1;
-                        else if (position.X > 1)
-                            position.X = -1;
-                        if (position.Y < -1)
-                            position.Y = 1;
-                        else if (position.Y > 1)
-                            position.Y = -1;
-                        
-                        // if (position.X < -1 || position.X > 1 || position.Y < -1 || position.Y > 1)
-                        // {
-                        //     position = new Vector2((float)random.NextDouble(), (float)random.NextDouble()) * 2 - Vector2.One;
-                        //     angle = (float)random.NextDouble() * MathF.PI * 2;
-                        //     particles[i] = new Particle() {Position = position, Angle = angle, FramesAlive = 0};
-                        //     continue;
-                        // }
-
-                        float perlin = (float) Perlin.Perlin3D((1 + position.X) * 8, (1 + position.Y) * 8, z);
-                        particles[i].Angle = MathHelper.Lerp(angle,  perlin * 32, 0.08f);
-                        particles[i].Position = position;
-                    }
-                    z += 0.001f;
-                    vbo.SubData(particles);
+                    // for (var i = 0; i < particles.Length; i++)
+                    // {
+                    //     float angle = particles[i].Angle;
+                    //     Vector2 position = particles[i].Position;
+                    //     position += new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * 0.01f;
+                    //
+                    //     if (position.X < -1)
+                    //         position.X = 1;
+                    //     else if (position.X > 1)
+                    //         position.X = -1;
+                    //     if (position.Y < -1)
+                    //         position.Y = 1;
+                    //     else if (position.Y > 1)
+                    //         position.Y = -1;
+                    //     
+                    //     // if (position.X < -1 || position.X > 1 || position.Y < -1 || position.Y > 1)
+                    //     // {
+                    //     //     position = new Vector2((float)random.NextDouble(), (float)random.NextDouble()) * 2 - Vector2.One;
+                    //     //     angle = (float)random.NextDouble() * MathF.PI * 2;
+                    //     //     particles[i] = new Particle() {Position = position, Angle = angle, FramesAlive = 0};
+                    //     //     continue;
+                    //     // }
+                    //
+                    //     float perlin = (float) Perlin.Perlin3D((1 + position.X) * 8, (1 + position.Y) * 8, z);
+                    //     particles[i].Angle = MathHelper.Lerp(angle,  perlin * 32, 0.08f);
+                    //     particles[i].Position = position;
+                    // }
 
                     vao.Bind();
                     shader.Bind();
