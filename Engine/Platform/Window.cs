@@ -46,7 +46,22 @@ namespace Engine.Platform
             {
                 Handle = GLFW.CreateWindow(width, height, title, null, null);
             }
+            _title = title;
             _handleToWindow.Add(Handle, this);
+        }
+
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                unsafe
+                {
+                    GLFW.SetWindowTitle(Handle, value);
+                }
+            }
         }
         
         public bool IsRunning

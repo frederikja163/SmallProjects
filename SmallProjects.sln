@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{F60A9281-E068-4675-8982-AA7DA2C8B476}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowField", "FlowField\FlowField.csproj", "{D30E6211-AE70-414C-8E03-1E32A82B8C93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,5 +27,11 @@ Global
 		{F60A9281-E068-4675-8982-AA7DA2C8B476}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F60A9281-E068-4675-8982-AA7DA2C8B476}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F60A9281-E068-4675-8982-AA7DA2C8B476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D30E6211-AE70-414C-8E03-1E32A82B8C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D30E6211-AE70-414C-8E03-1E32A82B8C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D30E6211-AE70-414C-8E03-1E32A82B8C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D30E6211-AE70-414C-8E03-1E32A82B8C93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

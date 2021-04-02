@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -49,6 +50,15 @@ namespace Engine.Rendering
     public sealed class ShaderProgram : IDisposable
     {
         internal readonly uint Handle;
+
+        [Pure]
+        public static ShaderProgram CreateVertexFragment(string vertexPath, string fragmentPath)
+        {
+            using VertexShader vertex = Assets.GetAsset<VertexShader>(vertexPath);
+            using FragmentShader fragment = Assets.GetAsset<FragmentShader>(fragmentPath);
+
+            return new ShaderProgram(vertex, fragment);
+        }
 
         public ShaderProgram(params ShaderStage[] shaderStage)
         {
