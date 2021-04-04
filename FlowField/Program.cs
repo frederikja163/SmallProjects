@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Engine;
@@ -12,11 +10,11 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using Window = Engine.Platform.Window;
 
-namespace FlowFieldCPU
+namespace FlowField
 {
     internal sealed class Program
     {
-        private const int ParticleCount = 10_000_0;
+        private const int ParticleCount = 1_000_000;
         
         [StructLayout(LayoutKind.Sequential, Size = 16)]
         private struct Particle
@@ -48,7 +46,11 @@ namespace FlowFieldCPU
                 BufferObject<Particle> vbo = new ShaderStorageBufferObject<Particle>(0, particles);
                 VertexArray vao = new VertexArray();
                 vao.AddVertexAttribute(vbo, shader.GetAttributeLocation("vPosition"), 2, VertexAttribType.Float);
-                GL.ClearColor(0.1f, 0.1f, 0.1f, 1);
+                GL.ClearColor(0.1f, 0.1f, 0.1f, 1f);
+                
+                Texture texture = new Texture(1080, 720);
+                Framebuffer framebuffer = new Framebuffer(texture);
+                framebuffer.Bind(FramebufferTarget.Framebuffer);
                 
                 Stopwatch stopwatch = new Stopwatch();
                 int positionZLoc = computeShader.GetUniformLocation("uPositionZ");
