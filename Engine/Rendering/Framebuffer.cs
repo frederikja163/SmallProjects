@@ -9,14 +9,18 @@ namespace Engine.Rendering
 
         public Framebuffer(Texture texture)
         {
-            Handle = GL.GenFramebuffer();
+            Handle = GL.CreateFramebuffer();
             GL.NamedFramebufferTexture(Handle, FramebufferAttachment.ColorAttachment0, texture.Handle, 0);
+            FramebufferStatus status = GL.CheckNamedFramebufferStatus(Handle, FramebufferTarget.Framebuffer);
+            if (status != FramebufferStatus.FramebufferComplete)
+            {
+                throw new Exception($"Framebuffer is not complete: {status}");
+            }
         }
 
         public void Bind(FramebufferTarget target)
         {
             GL.BindFramebuffer(target, Handle);
-            GL.DrawBuffer(DrawBufferMode.ColorAttachment0);
         }
         
         public void Dispose()

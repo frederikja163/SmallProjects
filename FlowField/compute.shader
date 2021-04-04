@@ -1,4 +1,7 @@
 #version 450 core
+#define PerlinWeight 0.01f
+#define ParticleSpeed 0.002f
+
 layout(local_size_x = 1000) in;
 
 uniform float uPositionZ;
@@ -22,9 +25,9 @@ void main()
     Particle particle = particles[gid];
     
     float perlin = perlin3D(vec3(particle.Position, uPositionZ));
-    particle.Angle = mix(particle.Angle, perlin * 32, 0.01f);
+    particle.Angle = mix(particle.Angle, perlin * 32, PerlinWeight);
     vec2 dir = vec2(cos(particle.Angle), sin(particle.Angle));
-    particle.Position += dir * 0.001f;
+    particle.Position += dir * ParticleSpeed;
 
     if (particle.Position.x < -1)
         particle.Position.x  = 1;

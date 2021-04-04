@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Engine;
 using Engine.Rendering;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -14,8 +15,12 @@ namespace FlowField
 {
     internal sealed class Program
     {
-        private const int ParticleCount = 1_000_000;
-        
+        private const int ParticleCount = 10_000_000;
+        private static readonly Color3<Rgb> BackgroundColor = Color3.Purple;
+        private const float TrailLenght = 50;
+        private static readonly Color3<Rgb> TrailColor = Color3.Red;
+        private const float PerlinSpeed = 0.0005f;
+
         [StructLayout(LayoutKind.Sequential, Size = 16)]
         private struct Particle
         {
@@ -32,6 +37,7 @@ namespace FlowField
                 window.MakeCurrent();
                 GLLoader.LoadBindings(new GLFWBindingsContext());
                 var random = new Random();
+                GL.ClearColor(0, 0, 0, 1);
 
                 Particle[] particles = new Particle[ParticleCount];
                 for (int i = 0; i < particles.Length; i++)
@@ -46,11 +52,9 @@ namespace FlowField
                 BufferObject<Particle> vbo = new ShaderStorageBufferObject<Particle>(0, particles);
                 VertexArray vao = new VertexArray();
                 vao.AddVertexAttribute(vbo, shader.GetAttributeLocation("vPosition"), 2, VertexAttribType.Float);
-                GL.ClearColor(0.1f, 0.1f, 0.1f, 1f);
                 
                 Texture texture = new Texture(1080, 720);
                 Framebuffer framebuffer = new Framebuffer(texture);
-                framebuffer.Bind(FramebufferTarget.Framebuffer);
                 
                 Stopwatch stopwatch = new Stopwatch();
                 int positionZLoc = computeShader.GetUniformLocation("uPositionZ");
@@ -64,11 +68,9 @@ namespace FlowField
                     stopwatch.Start();
                     
                     computeShader.Bind();
-                    z += 0.001f;
+                    z += PerlinSpeed;
                     computeShader.SetUniform(positionZLoc, z);
                     GL.DispatchCompute(ParticleCount / 1000, 1, 1);
-                    
-                    GL.Clear(ClearBufferMask.ColorBufferBit);
 
                     // for (var i = 0; i < particles.Length; i++)
                     // {
@@ -97,10 +99,27 @@ namespace FlowField
                     //     particles[i].Angle = MathHelper.Lerp(angle,  perlin * 32, 0.08f);
                     //     particles[i].Position = position;
                     // }
+                    
 
+                    
+                    framebuffer.Bind(FramebufferTarget.Framebuffer);
+                    
+                    GL.Enable(EnableCap.Blend);
+                    GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+                    new Rect(BackgroundColor.ToRgba(1 / TrailLenght)).Draw();
+
+                    GL.BlendFunc(BlendingFactor.SrcColor, BlendingFactor.OneMinusSrcColor);
+                    new Rect(new Color4<Rgba>(TrailColor.Z / 10, TrailColor.Y / 10, TrailColor.X / 10, 1)).Draw();
+                    GL.Disable(EnableCap.Blend);
+                    
                     vao.Bind();
                     shader.Bind();
                     GL.DrawArrays(PrimitiveType.Points, 0, particles.Length);
+                    
+                    GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+                    GL.Clear(ClearBufferMask.ColorBufferBit);
+                    
+                    new Rect(texture).Draw();
                     
                     window.SwapBuffers();
                     

@@ -10,4 +10,11 @@
       <PackageReference Include="OpenTK" Version="5.0.0-pre.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Assets\rect.frag" />
+      <EmbeddedResource Include="Assets\rect.frag" />
+      <None Remove="Assets\rect.vert" />
+      <EmbeddedResource Include="Assets\rect.vert" />
+    </ItemGroup>
+
 </Project>

@@ -15,6 +15,7 @@ namespace Engine
 
         static Assets()
         {
+            AddAssembly(Assembly.GetCallingAssembly());
             AddLoader<VertexShader>(stream => new VertexShader(stream));
             AddLoader<FragmentShader>(stream => new FragmentShader(stream));
             AddLoader<ComputeShader>(stream => new ComputeShader(stream));
