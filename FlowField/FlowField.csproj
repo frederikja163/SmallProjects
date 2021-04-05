@@ -10,9 +10,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="shader.frag" />
-        <EmbeddedResource Include="shader.vert" />
-        <EmbeddedResource Include="compute.shader" />
+      <EmbeddedResource Include="particle.frag" />
+        <EmbeddedResource Include="particle.vert" />
+        <EmbeddedResource Include="particle.comp" />
+        <None Remove="noise.comp" />
+        <EmbeddedResource Include="noise.comp" />
     </ItemGroup>
 
 </Project>
