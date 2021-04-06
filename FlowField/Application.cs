@@ -14,7 +14,7 @@ namespace FlowField
         private static readonly Color3<Rgb> BackgroundColor = Color3.Purple;
         private const float TrailLenght = 50;
         private static readonly Color3<Rgb> TrailColor = Color3.Red;
-        private const float PerlinSpeed = 0.0001f;
+        private const float PerlinSpeed = 0.001f;
         private const float RandomWeight = 0.01f;
 
         private readonly Particle[] _particles = new Particle[ParticleCount];
