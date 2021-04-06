@@ -22,9 +22,6 @@ namespace FlowField
         private readonly ShaderProgram _particleComputeShader;
         private readonly BufferObject<Particle> _particleBuffer;
         private readonly VertexArray _vertexArray;
-        
-        private readonly ShaderProgram _perlinComputeShader;
-        private readonly BufferObject<float> _perlinBuffer;
         private float _perlinZPosition;
         private readonly int _perlinZPositionLocation;
         
