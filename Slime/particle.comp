@@ -1,0 +1,86 @@
+#version 450 core
+layout(local_size_x = 1) in;
+
+struct Particle
+{
+    vec2 Position;
+    float Angle;
+};
+
+uniform sampler2D uTexture1;
+
+buffer Particles{
+    Particle particles[];
+};
+
+vec2 AngleToVector(float angle) {
+    return vec2(cos(angle), sin(angle));
+}
+
+float TextureMagnitude(vec2 texturePosition)
+{
+    vec2 position = vec2(texturePosition.x, -texturePosition.y) * 2 + 0.5f;
+    vec4 color = texture(uTexture1, position);
+    return (color.x + color.y + color.z + color.w) / 4;
+}
+
+float Sense(vec2 start, vec2 dir, float length, float sensitivity)
+{
+    float sum;
+    for (float t = 0; t < length; t += sensitivity)
+    {
+        sum += TextureMagnitude(start + dir * t);
+    }
+    return sum;
+    
+//    float sum;
+//    for (float x = start.x; x < end.x; x += sensitivity)
+//    {
+//        for (float y = start.y; y < end.y; y += sensitivity)
+//        {
+//            sum += TextureMagnitude(vec2(x, y));
+//        }
+//    }
+//    return sum;
+}
+
+void main()
+{
+    Particle particle = particles[gl_GlobalInvocationID.x];
+
+    float angleDelta = 20;
+    float weightForward = Sense(particle.Position, AngleToVector(particle.Angle), 0.01f, 0.0001f);
+    float weightRight = Sense(particle.Position, AngleToVector(particle.Angle + angleDelta), 0.01f, 0.0001f);
+    float weightLeft = Sense(particle.Position, AngleToVector(particle.Angle - angleDelta), 0.01f, 0.0001f);
+//    float weightForward = TextureMagnitude(particle.Position + AngleToVector(particle.Angle) * 0.001f);
+//    float weightRight = TextureMagnitude(particle.Position + AngleToVector(particle.Angle + angleDelta) * 0.001f);
+//    float weightLeft = TextureMagnitude(particle.Position + AngleToVector(particle.Angle - angleDelta) * 0.001f);
+    float angleCenter;
+    if (weightForward > weightRight && weightForward > weightLeft)
+    {
+        angleCenter = particle.Angle;
+    }
+    else if (weightRight > weightLeft)
+    {
+        angleCenter = particle.Angle + angleDelta;
+    }
+    else
+    {
+        angleCenter = particle.Angle - angleDelta;
+    }
+//    float sum = forward + right + left;
+//    float angleCenter = (particle.Angle * forward + (particle.Angle + 10) * right + (particle.Angle - 10) * left) / sum;
+    
+    particle.Position += AngleToVector(angleCenter) * 0.001f;
+
+    if (particle.Position.x < -1)
+        particle.Position.x  = 1;
+    else if (particle.Position.x > 1)
+        particle.Position.x  = -1;
+    if (particle.Position.y < -1)
+        particle.Position.y  = 1;
+    else if (particle.Position.y > 1)
+        particle.Position.y  = -1;
+
+    particles[gl_GlobalInvocationID.x] = particle;
+}

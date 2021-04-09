@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Engine\Engine.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="particle.frag" />
+      <EmbeddedResource Include="particle.vert" />
+      <None Remove="particle.comp" />
+      <EmbeddedResource Include="particle.comp" />
+      <None Remove="trail.frag" />
+      <EmbeddedResource Include="trail.frag" />
+      <None Remove="trail.vert" />
+      <EmbeddedResource Include="trail.vert" />
+    </ItemGroup>
+
+</Project>

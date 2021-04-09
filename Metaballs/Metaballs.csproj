@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Engine\Engine.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="shader.frag" />
+      <EmbeddedResource Include="shader.frag" />
+      <None Remove="shader.vert" />
+      <EmbeddedResource Include="shader.vert" />
+    </ItemGroup>
+
+</Project>

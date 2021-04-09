@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowField", "FlowField\FlowField.csproj", "{D30E6211-AE70-414C-8E03-1E32A82B8C93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slime", "Slime\Slime.csproj", "{E4EC2434-5E55-4003-A743-BBA35CDF9385}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metaballs", "Metaballs\Metaballs.csproj", "{4918EE45-CB9E-4C49-A7F1-E9EFCEAFDC78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,14 @@ Global
 		{D30E6211-AE70-414C-8E03-1E32A82B8C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D30E6211-AE70-414C-8E03-1E32A82B8C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D30E6211-AE70-414C-8E03-1E32A82B8C93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4EC2434-5E55-4003-A743-BBA35CDF9385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4EC2434-5E55-4003-A743-BBA35CDF9385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4EC2434-5E55-4003-A743-BBA35CDF9385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4EC2434-5E55-4003-A743-BBA35CDF9385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4918EE45-CB9E-4C49-A7F1-E9EFCEAFDC78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4918EE45-CB9E-4C49-A7F1-E9EFCEAFDC78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4918EE45-CB9E-4C49-A7F1-E9EFCEAFDC78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4918EE45-CB9E-4C49-A7F1-E9EFCEAFDC78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

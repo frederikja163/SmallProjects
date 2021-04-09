@@ -24,8 +24,6 @@ namespace FlowField
         private readonly VertexArray _vertexArray;
         private float _perlinZPosition;
         private readonly int _perlinZPositionLocation;
-        
-        private readonly Stopwatch _stopwatch;
 
         private readonly Texture _texture;
         private readonly Framebuffer _framebuffer;
@@ -57,20 +55,13 @@ namespace FlowField
                 
             _texture = new Texture(1080, 720);
             _framebuffer = new Framebuffer(_texture);
-                
-            _stopwatch = new Stopwatch();
+            
             _perlinZPositionLocation = _particleComputeShader.GetUniformLocation("uPositionZ");
             float z = (float)random.NextDouble();
         }
         
         protected override void OnRender()
         {
-            _stopwatch.Stop();
-            float dt = (float)Stopwatch.Frequency / _stopwatch.ElapsedTicks;
-            Window.Title = $"Flow field [FPS: {dt}]";
-            _stopwatch.Reset();
-            _stopwatch.Start();
-            
             // CpuTick();
             GpuTick();
             
