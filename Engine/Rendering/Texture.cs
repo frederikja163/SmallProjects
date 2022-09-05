@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
@@ -8,7 +9,7 @@ namespace Engine.Rendering
     {
         public static readonly Texture White = new Texture(new Color4<Rgba>[1,1] {{Color4.White}});
         
-        internal readonly uint Handle;
+        internal readonly TextureHandle Handle;
 
         public Texture(int width, int height)
         {

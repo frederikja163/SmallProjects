@@ -1,11 +1,12 @@
 ﻿using System;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
 {
     public sealed class Framebuffer : IDisposable
     {
-        internal readonly uint Handle;
+        internal readonly FramebufferHandle Handle;
 
         public Framebuffer(Texture texture)
         {

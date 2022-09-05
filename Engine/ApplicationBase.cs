@@ -22,6 +22,9 @@ namespace Engine
             _window = new Window(width, height, title);
             _window.MakeCurrent();
             GLLoader.LoadBindings(new GLFWBindingsContext());
+            
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         }
 
         public void Run()

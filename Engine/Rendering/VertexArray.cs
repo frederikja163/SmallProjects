@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
 {
     public sealed class VertexArray : IDisposable
     {
-        internal readonly uint Handle;
+        internal readonly VertexArrayHandle Handle;
         private uint _totalVertexBuffers = 0;
-        private readonly Dictionary<uint, uint> _vertexBufferBindings = new Dictionary<uint, uint>();
+        private readonly Dictionary<BufferHandle, uint> _vertexBufferBindings = new();
 
         public VertexArray(BufferObject<uint> ebo)
         {

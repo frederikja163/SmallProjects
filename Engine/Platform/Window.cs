@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenTK.Graphics;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using GlfwWindow = OpenTK.Windowing.GraphicsLibraryFramework.Window;
 
@@ -78,6 +79,18 @@ namespace Engine.Platform
                 unsafe
                 {
                     GLFW.SetWindowShouldClose(Handle, !value);
+                }
+            }
+        }
+
+        public Vector2i Size
+        {
+            get
+            {
+                unsafe
+                {
+                    GLFW.GetWindowSize(Handle, out int width, out int height);
+                    return new Vector2i(width, height);
                 }
             }
         }

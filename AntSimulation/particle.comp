@@ -1,0 +1,47 @@
+#version 450 core
+layout(local_size_x=100) in;
+
+uniform float uSpeed;
+uniform sampler2D uTrailMap;
+
+struct Particle
+{
+    vec2 Position;
+    vec2 Direction;
+};
+
+layout(binding = 1) buffer ParticleBuffer
+{
+    Particle particles[];
+};
+
+float getTexture(Particle particle)
+{
+    vec2 texCoord = particle.Position / 2 + 1;
+    return texture(uTrailMap, texCoord).x;
+}
+
+
+void main()
+{
+    uint index = gl_GlobalInvocationID.x;
+    Particle particle = particles[index];
+    
+    particle.Position += particle.Direction * uSpeed;
+    
+    if (particle.Position.x < -1)
+        particle.Position.x  = 1;
+    else if (particle.Position.x > 1)
+        particle.Position.x  = -1;
+    if (particle.Position.y < -1)
+        particle.Position.y  = 1;
+    else if (particle.Position.y > 1)
+        particle.Position.y  = -1;
+    
+    if (getTexture(particle) > 0)
+    {
+        particle.Direction = vec2(0);
+    }
+    
+    particles[index] = particle;
+}

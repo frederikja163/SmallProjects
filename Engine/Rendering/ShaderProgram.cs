@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.IO;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
@@ -8,7 +9,7 @@ namespace Engine.Rendering
 {
     public abstract class ShaderStage : IDisposable
     {
-        internal readonly uint Handle;
+        internal readonly ShaderHandle Handle;
         
         protected ShaderStage(ShaderType type, StreamReader stream)
         {
@@ -18,14 +19,14 @@ namespace Engine.Rendering
             GL.ShaderSource(Handle, src);
             GL.CompileShader(Handle);
 
-            int infoLogLength = 0;
-            GL.GetShaderiv(Handle, ShaderParameterName.InfoLogLength, ref infoLogLength);
-            if (infoLogLength > 0)
-            {
-                int _ = 0;
-                string infoLog = GL.GetShaderInfoLog(Handle, infoLogLength, ref _);
-                throw new Exception($"{type} failed compilation: {infoLog}");
-            }
+            // int infoLogLength = 0;
+            // GL.GetShaderiv(Handle, ShaderParameterName.InfoLogLength, infoLogLength);
+            // if (infoLogLength > 0)
+            // {
+            //     int _ = 0;
+            //     string infoLog = GL.GetShaderInfoLog(Handle, infoLogLength, ref _);
+            //     throw new Exception($"{type} failed compilation: {infoLog}");
+            // }
         }
         
         public void Dispose()
@@ -56,7 +57,7 @@ namespace Engine.Rendering
 
     public sealed class ShaderProgram : IDisposable
     {
-        internal readonly uint Handle;
+        internal readonly ProgramHandle Handle;
 
         [Pure]
         public static ShaderProgram CreateVertexFragment(string vertexPath, string fragmentPath)
@@ -86,13 +87,13 @@ namespace Engine.Rendering
             GL.LinkProgram(Handle);
 
             int infoLogLength = 0;
-            GL.GetProgramiv(Handle, ProgramPropertyARB.InfoLogLength, ref infoLogLength);
-            if (infoLogLength > 0)
-            {
-                int _ = 0;
-                string infoLog = GL.GetProgramInfoLog(Handle, infoLogLength, ref _);
-                throw new Exception($"Shaderprogram failed linking: {infoLog}");
-            }
+            // GL.GetProgramiv(Handle, ProgramPropertyARB.InfoLogLength, infoLogLength);
+            // if (infoLogLength > 0)
+            // {
+            //     int _ = 0;
+            //     string infoLog = GL.GetProgramInfoLog(Handle, infoLogLength, ref _);
+            //     throw new Exception($"Shaderprogram failed linking: {infoLog}");
+            // }
 
             foreach (ShaderStage stage in shaderStage)
             {
@@ -117,23 +118,31 @@ namespace Engine.Rendering
         public void SetUniform(int location, in float value) => GL.ProgramUniform1fv(Handle, location, 1, value);
         public void SetUniform(int location, in int value) => GL.ProgramUniform1iv(Handle, location, 1, value);
         
-        public void SetUniform(int location, in Vector2 value) => GL.ProgramUniform2fv(Handle, location, 1, value.X);
-        public void SetUniform(int location, in Vector2i value) => GL.ProgramUniform2iv(Handle, location, 1, value.X);
+        public void SetUniform(int location, in Vector2 value) => GL.ProgramUniform2f(Handle, location, value.X, value.Y);
+        public void SetUniform(int location, in Vector2i value) => GL.ProgramUniform2i(Handle, location, value.X, value.Y);
         
         
-        public void SetUniform(int location, in Vector3 value) => GL.ProgramUniform3fv(Handle, location, 1, value.X);
-        public void SetUniform(int location, in Vector3i value) => GL.ProgramUniform3iv(Handle, location, 1, value.X);
+        public void SetUniform(int location, in Vector3 value) => GL.ProgramUniform3f(Handle, location, value.X, value.Y, value.Z);
+        public void SetUniform(int location, in Vector3i value) => GL.ProgramUniform3i(Handle, location, value.X, value.Y, value.Z);
         
-        public void SetUniform(int location, in Vector4 value) => GL.ProgramUniform4fv(Handle, location, 1, value.X);
-        public void SetUniform(int location, in Vector4i value) => GL.ProgramUniform4iv(Handle, location, 1, value.X);
-        public void SetUniform(int location, in Color4<Rgba> value) => GL.ProgramUniform4fv(Handle, location, 1, value.X);
-        
+        public void SetUniform(int location, in Vector4 value) => GL.ProgramUniform4f(Handle, location, value.X, value.Y, value.Z, value.W);
+        public void SetUniform(int location, in Vector4i value) => GL.ProgramUniform4i(Handle, location, value.X, value.Y, value.Z, value.W);
+        public void SetUniform(int location, in Color4<Rgba> value) => GL.ProgramUniform4f(Handle, location, value.X, value.Y, value.Z, value.W);
+
         public void SetUniform(int location, in Matrix4 value)
-            => GL.ProgramUniformMatrix4fv(Handle, location, 1, false, value.Row0.X);
+        {
+            unsafe
+            {
+                fixed (float* ptr = &value.Row0.X)
+                {
+                    GL.ProgramUniformMatrix4fv(Handle, location, 1, 0, ptr);
+                }
+            }
+        }
         
         public void Dispose()
         {
-            GL.DeleteShader(Handle);
+            GL.DeleteProgram(Handle);
         }
     }
 }

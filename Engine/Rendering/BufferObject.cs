@@ -1,4 +1,5 @@
 using System;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
@@ -6,7 +7,7 @@ namespace Engine.Rendering
     public class BufferObject<T> : IDisposable
      where T : unmanaged
     {
-        internal readonly uint Handle;
+        internal readonly BufferHandle Handle;
 
         public BufferObject(params T[] data)
         {
@@ -44,7 +45,7 @@ namespace Engine.Rendering
         {
             GL.BindBuffer(BufferTargetARB.ShaderStorageBuffer, Handle);
             GL.BindBufferBase(BufferTargetARB.ShaderStorageBuffer, (uint)bindingIndex, Handle);
-            GL.BindBuffer(BufferTargetARB.ShaderStorageBuffer, 0);
+            GL.BindBuffer(BufferTargetARB.ShaderStorageBuffer, BufferHandle.Zero);
         }
         
         public ShaderStorageBufferObject(int bindingIndex, int size) : base(size)

@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slime", "Slime\Slime.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metaballs", "Metaballs\Metaballs.csproj", "{4918EE45-CB9E-4C49-A7F1-E9EFCEAFDC78}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntSimulation", "AntSimulation\AntSimulation.csproj", "{49A5F24E-7042-4C41-AE8B-967FB881F87E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TrashedProjects", "TrashedProjects", "{E7344CCB-93E7-45D9-94C5-A682089E5CDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,7 +47,13 @@ Global
 		{4918EE45-CB9E-4C49-A7F1-E9EFCEAFDC78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4918EE45-CB9E-4C49-A7F1-E9EFCEAFDC78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4918EE45-CB9E-4C49-A7F1-E9EFCEAFDC78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49A5F24E-7042-4C41-AE8B-967FB881F87E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49A5F24E-7042-4C41-AE8B-967FB881F87E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49A5F24E-7042-4C41-AE8B-967FB881F87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49A5F24E-7042-4C41-AE8B-967FB881F87E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{49A5F24E-7042-4C41-AE8B-967FB881F87E} = {E7344CCB-93E7-45D9-94C5-A682089E5CDF}
+		{E4EC2434-5E55-4003-A743-BBA35CDF9385} = {E7344CCB-93E7-45D9-94C5-A682089E5CDF}
 	EndGlobalSection
 EndGlobal

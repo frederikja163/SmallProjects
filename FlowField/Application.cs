@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Engine;
 using Engine.Rendering;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
@@ -10,7 +11,7 @@ namespace FlowField
 {
     public class Application : ApplicationBase
     {
-        private const int ParticleCount = 1_000_000;
+        private const int ParticleCount = 20_000_000;
         private static readonly Color3<Rgb> BackgroundColor = Color3.Purple;
         private const float TrailLenght = 50;
         private static readonly Color3<Rgb> TrailColor = Color3.Red;
@@ -69,7 +70,7 @@ namespace FlowField
             
             MakeTrails();
             
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, FramebufferHandle.Zero);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             
             new Rect(_texture).Draw();
